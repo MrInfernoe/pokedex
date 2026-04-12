@@ -1,11 +1,12 @@
-package main
+package langShell_test
 
 import (
 	"testing"
+	"pokedex/internal/langShell"
 )
 
 func TestCleanInput(t *testing.T) {
-	cases := []struct{
+	cases := []struct {
 		input string
 		output []string
 	}{
@@ -28,12 +29,12 @@ func TestCleanInput(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		got := cleanInput(tc.input)
+		got := langShell.CleanInput(tc.input)
 		for i := range got {
 			word := got[i]
 			expected := tc.output[i]
 			if word != expected {
-				t.Errorf("output: %v does not match expected: %v", word, expected)
+				t.Errorf("output: %q does not match expected: %q", got, tc.output)
 			}
 		}
 	}
