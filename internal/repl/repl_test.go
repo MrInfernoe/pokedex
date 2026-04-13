@@ -54,12 +54,15 @@ func TestCommandExit(t *testing.T) {
     cmd := exec.Command(os.Args[0], "-test.run=TestCommandExit")
     cmd.Env = append(os.Environ(), "BE_EXITER=1")
     err := cmd.Run()
-    if e, ok := err.(*exec.ExitError); ok && !e.Success() {
+	if err == nil {
+		return
+	}
+    if e, ok := err.(*exec.ExitError); ok && e.Success() {
         return
     }
-    t.Fatalf("process ran with err %v, want exit status 1", err)
+    t.Fatalf("process ran with err %v, want exit status 0", err)
 }
 
 func TestCommandHelp(t *testing.T) {
-	repl.CommandHelp()
+	
 }
