@@ -5,10 +5,13 @@ import (
 	"os"
 	"fmt"
 	"pokedex/internal/repl"
+	"pokedex/internal/pokecache"
 )
 
 func main() {
 	var config repl.Config
+	config.Cache = pokecache.NewCache()
+
 	scanner := bufio.NewScanner(os.Stdin)
 	for true {
 		fmt.Print("Pokedex > ")

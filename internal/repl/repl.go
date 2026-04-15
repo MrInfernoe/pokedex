@@ -7,11 +7,13 @@ import (
 	"net/http"
 	"io"
 	"encoding/json"
+	"pokedex/internal/pokecache"
 )
 
 type Config struct {
 	Next		string
 	Previous	string
+	Cache		*pokecache.Cache
 }
 
 
@@ -45,23 +47,36 @@ type LocationArea struct {
 func CommandMap(c *Config) error {
 	var link string
 	if c.Next == "" {
-		link = "https://pokeapi.co/api/v2/location-area/"
+		link = "https://pokeapi.co/api/v2/location-area/?offset=0&limit=20"
 	} else {
 		link = c.Next
 	}
-	res, err := http.Get(link)
-	if err != nil {
-		return err
+	// fmt.Printf(link + "\n")
+
+	var body []byte
+	if getCache, ok := c.Cache.Get(link); ok {
+		// fmt.Println("Restoring from cache")
+		body = getCache
+	} else {
+		// fmt.Println("Not restoring")
+		res, err := http.Get(link)
+
+		if err != nil {
+			return err
+		}
+		body, err = io.ReadAll(res.Body)
+		if err != nil {
+			return err
+		}
+
+		defer res.Body.Close()
+		// fmt.Printf("body: %s\n", body)
+
+		c.Cache.Add(link, body)
 	}
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
-	// fmt.Printf("body: %s\n", body)
 
 	var LocA LocationArea
-	err = json.Unmarshal(body, &LocA)
+	err := json.Unmarshal(body, &LocA)
 	if err != nil {
 		return err
 	}
