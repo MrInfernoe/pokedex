@@ -47,8 +47,9 @@ func TestCleanInput(t *testing.T) {
 // Andrew Gerrand https://go.dev/talks/2014/testing.slide#23
 
 func TestCommandExit(t *testing.T) {
+	config := repl.Config{}
     if os.Getenv("BE_EXITER") == "1" {
-        repl.CommandExit()
+        repl.CommandExit(&config)
         return
     }
     cmd := exec.Command(os.Args[0], "-test.run=TestCommandExit")

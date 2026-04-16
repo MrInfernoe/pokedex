@@ -37,7 +37,8 @@ func CommandHelp(c *Config) error {
 		return fmt.Errorf("missing command in ordering")
 	}
 
-	fmt.Println("Welcome to the Pokedex!\nUsage:\n")
+	fmt.Println("Welcome to the Pokedex!\nUsage:")
+	fmt.Println("")
 	for _, command := range order {
 		fmt.Printf("%s: \t%s\n", registry[command].name, registry[command].description)
 	}
