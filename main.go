@@ -4,13 +4,14 @@ import (
 	"bufio"
 	"os"
 	"fmt"
+	"time"
 	"pokedex/internal/repl"
 	"pokedex/internal/pokecache"
 )
 
 func main() {
 	var config repl.Config
-	config.Cache = pokecache.NewCache()
+	config.Cache = pokecache.NewCache(5*time.Second)
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for true {
