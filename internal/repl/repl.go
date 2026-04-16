@@ -31,7 +31,16 @@ func CommandExit(c *Config) error {
 }
 // registry command displays help
 func CommandHelp(c *Config) error {
-	fmt.Println("Welcome to the Pokedex!\nUsage:\n\nhelp: Display a help message\nexit: Exit the Pokedex")
+	registry := GetRegistry()
+	order := []string{"help", "map", "mapb", "exit"}
+	if len(order) != len(registry) {
+		return fmt.Errorf("missing command in ordering")
+	}
+
+	fmt.Println("Welcome to the Pokedex!\nUsage:\n")
+	for _, command := range order {
+		fmt.Printf("%s: \t%s\n", registry[command].name, registry[command].description)
+	}
 	return nil
 }
 

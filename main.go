@@ -26,7 +26,11 @@ func main() {
 			firstWord := cleanText[0]
 			callFunc := repl.GetRegistry()[firstWord].Callback
 			if callFunc != nil {
-				callFunc(&config)
+				err := callFunc(&config)
+				if err != nil {
+					fmt.Println(err)
+					os.Exit(1)
+				}
 				fmt.Println("")
 				continue
 			}

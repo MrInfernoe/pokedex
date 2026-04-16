@@ -1,0 +1,1 @@
+printf "help\nmap\nmap\nmapb\nexit\n" | go run .
