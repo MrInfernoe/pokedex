@@ -32,15 +32,15 @@ func CommandExit(c *Config) error {
 // registry command displays help
 func CommandHelp(c *Config) error {
 	registry := GetRegistry()
-	order := []string{"help", "map", "mapb", "exit"}
+	order := []string{"help", "map", "mapb", "exit"} // possibly move to config
 	if len(order) != len(registry) {
 		return fmt.Errorf("missing command in ordering")
 	}
 
-	fmt.Println("Welcome to the Pokedex!\nUsage:")
-	fmt.Println("")
-	for _, command := range order {
-		fmt.Printf("%s: \t%s\n", registry[command].name, registry[command].description)
+	fmt.Printf("Welcome to the Pokedex!\nUsage:\n\n")
+	for _, commandKey := range order {
+		commandData := registry[commandKey]
+		fmt.Printf("%s: \t%s\n", commandData.name, commandData.description)
 	}
 	return nil
 }
@@ -66,6 +66,7 @@ func CommandMap(c *Config) error {
 	var body []byte
 	if getCache, ok := c.Cache.Get(link); ok {
 		// fmt.Println("Restoring from cache")
+		fmt.Printf("Restoring from cache:\n\n")
 		body = getCache
 	} else {
 		// fmt.Println("Not restoring")
