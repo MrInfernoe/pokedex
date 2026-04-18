@@ -4,14 +4,14 @@ import (
 	"bufio"
 	"os"
 	"fmt"
-	"time"
+	// "time"
 	"pokedex/internal/repl"
-	"pokedex/internal/pokecache"
+	// "pokedex/internal/pokecache"
+	"strings"
 )
 
 func main() {
-	var config repl.Config
-	config.Cache = pokecache.NewCache(5*time.Second)
+	config := repl.NewConfig()
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for true {
@@ -27,7 +27,9 @@ func main() {
 			firstWord := cleanText[0]
 			callFunc := repl.GetRegistry()[firstWord].Callback
 			if callFunc != nil {
-				err := callFunc(&config)
+				argument := strings.Join(cleanText[1:], " ")
+				// fmt.Println(fmt.Sprintf("%s", argument))
+				err := callFunc(config, argument)
 				if err != nil {
 					fmt.Println(err)
 					os.Exit(1)
@@ -36,7 +38,7 @@ func main() {
 				continue
 			}
 		}
-		fmt.Println(fmt.Errorf("Unknown command"))
+		fmt.Println(fmt.Errorf("Unknown command\n"))
 	}
 }
 
