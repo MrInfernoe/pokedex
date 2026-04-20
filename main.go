@@ -27,7 +27,7 @@ func main() {
 			firstWord := cleanText[0]
 			callFunc := repl.GetRegistry()[firstWord].Callback
 			if callFunc != nil {
-				argument := strings.Join(cleanText[1:], " ")
+				argument := strings.Join(cleanText[1:], "-")
 				// fmt.Println(fmt.Sprintf("%s", argument))
 				err := callFunc(config, argument)
 				if err != nil {

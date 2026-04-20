@@ -49,7 +49,7 @@ func TestCleanInput(t *testing.T) {
 func TestCommandExit(t *testing.T) {
 	config := repl.Config{}
     if os.Getenv("BE_EXITER") == "1" {
-        repl.CommandExit(&config)
+        repl.CommandExit(&config, "")
         return
     }
     cmd := exec.Command(os.Args[0], "-test.run=TestCommandExit")
